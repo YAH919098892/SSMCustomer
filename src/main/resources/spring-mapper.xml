@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 2连接池   -->
+    <bean id="dataSource"  class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/mybatis?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=GMT%2B8"/>
+        <property name="password" value="123456"/>
+        <property name="user" value="root"/>
+        <!--        最大连接池-->
+        <property name="maxPoolSize" value="30"/>
+        <!--        获取连接超时时间-->
+        <property name="checkoutTimeout" value="1000"/>
+    </bean>
+    <!-- 3sqlSessionFatory  -->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--        绑定mybatis.xml文件-->
+        <property name="configLocation" value="classpath:mybatis-confige.xml"/>
+        <!--<property name="mapperLocations"  value="classpath:com/dao/TbstudentMapper.xml"/>-->
+        <property name="transactionFactory">
+            <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+        </property>
+    </bean>
+    <!-- 配置dao接口烧扫描包，动态实现dao接口可以注入到spring容器   -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="mapperScannerConfigurer">
+        <!--    注入sqlsessionfactorybean-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
+        <property name="basePackage" value="com.mapper"/>
+    </bean>
+    <bean id="customerServiceImp" class="com.service.CustomerServiceImp">
+        <property name="customerMapper" ref="customerMapper"/>
+    </bean>
+
+
+
+
+</beans>

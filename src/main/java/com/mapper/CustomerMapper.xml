@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.CustomerMapper">
+    <!--    增加-->
+    <insert id="addCustomer" parameterType="com.pojo.Customer">
+      insert  into mybatis.customer(id, username, jobs, phone) VALUE (#{id},#{username},#{jobs},#{phone})
+    </insert>
+    <!--    删除-->
+    <delete id="delectCustomer" parameterType="int" >
+delete from mybatis.customer where id=#{id}
+    </delete>
+    <!--   修改 -->
+    <update id="updateCustomer" parameterType="com.pojo.Customer">
+update mybatis.customer set username=#{username},jobs=#{jobs},phone=#{phone} where id=#{id}
+    </update>
+
+    <!--   查询 -->
+    <select id="selectCustomer" resultType="com.pojo.Customer">
+select * from mybatis.customer
+    </select>
+
+    <select id="selectCusById" resultType="com.pojo.Customer">
+select * from mybatis.customer where id=#{id}
+    </select>
+</mapper>
